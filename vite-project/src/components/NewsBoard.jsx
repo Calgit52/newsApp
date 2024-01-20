@@ -1,12 +1,38 @@
+import { useState, useEffect } from "react";
+import NewsItem from "./NewsItem";
+
 const NewsBoard = () => {
-    return (
-        <div>
-            <h2 className="text-center">Latest <span className="badge bg-danger">News</span>
+  const [articles, setArticles] = useState([]);
 
-            </h2>
+  useEffect(() => {
+    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${
+      import.meta.env.VITE_API_KEY
+    }`;
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => setArticles(data.articles));
+  }, []);
+  //   useEffect and empty array at end means you only want
+  //   the useEffect function ONE TIME as soon as the component mounts
 
-        </div>
-    )
-}
+  return (
+    <div>
+      <h2 className="text-center">
+        Latest <span className="badge bg-danger">News</span>
+      </h2>
+      {articles.map((news, index) => {
+        return (
+          <NewsItem
+            key={index}
+            title={news.title}
+            description={news.description}
+            src={news.urlToImage}
+            url={news.url}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
-export default NewsBoard
+export default NewsBoard;

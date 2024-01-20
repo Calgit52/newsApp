@@ -1,17 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import NewsItem from "./NewsItem";
 
-const NewsBoard = () => {
+const NewsBoard = ({ category }) => {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${
-      import.meta.env.VITE_API_KEY
-    }`;
+    let url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${import.meta.env.VITE_API_KEY
+      }`;
     fetch(url)
       .then((response) => response.json())
       .then((data) => setArticles(data.articles));
-  }, []);
+  }, [category]);
   //   useEffect and empty array at end means you only want
   //   the useEffect function ONE TIME as soon as the component mounts
 
